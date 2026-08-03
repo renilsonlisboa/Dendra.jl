@@ -43,7 +43,7 @@ function countGeral(dados::DataFrame, Anos::Vector{Int64})
         N_arvores = size(dados_arvores[i], 1)
         N_fustes = size(dados_fustes[i], 1)
 
-        push!(ContagemGeral, (AnoAtual, Familias, Generos, Especie, N_arvores, N_fustes,0,0))
+        push!(ContagemGeral, (AnoAtual, Familias, Generos, Especie, N_arvores, N_fustes, 0, 0))
     end
 
     return ContagemGeral
