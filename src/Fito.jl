@@ -254,7 +254,7 @@ function CalcIndice(Ano::Int64, Bloco::Int64, Parcela::Int64, Faixa::Int64, N::I
     )
 end
 
-function FitoBloco(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::Int64)
+function Phytosociology(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::Int64)
     Fitossociologia = DataFrame(
         Ano = Int64[],
         Bloco = Int64[],
@@ -363,7 +363,7 @@ function FitoBloco(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::
     return Fitossociologia,Indices
 end
 
-function FitoParcela(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::Float64)
+function Phytosociology(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::Float64)
     Fitossociologia = DataFrame(
         Ano = Int64[],
         Bloco = Int64[],
@@ -479,7 +479,7 @@ function FitoParcela(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area
     return Fitossociologia, Indices
 end
 
-function FitoFaixa(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::Float64)
+function Phytosociology(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::Float64)
     Fitossociologia = DataFrame(
         Ano = Int64[],
         Bloco = Int64[],
@@ -603,4 +603,11 @@ function FitoFaixa(dados_arvores::Vector{DataFrame}, Anos::Vector{Int64}, Area::
                                      "Distribuições", "$(name).png"))
     end
     return Fitossociologia, Indices
+end
+
+
+function Phytosociology(
+    dados_arvores::Vector{DataFrame}, 
+    Anos::Vector{Int64}, 
+    Area::Float64)
 end

@@ -8,7 +8,7 @@ Cria a estrutura de pastas de resultados dentro de `diretorio_saida`,
 caso ainda não existam. `mkpath` é idempotente, então não há problema
 em chamar esta função repetidamente.
 """
-function criar_estrutura_diretorios(diretorio_saida::AbstractString)
+function SetPaths(diretorio_saida::AbstractString)
     pastas = [
         "Resultados/Gráficos",
         "Resultados/Gráficos/Taxas",

@@ -25,7 +25,7 @@ function ValidateTaxonomy(df::DataFrame, savepath::String, save::Bool = true)
     for j in sort(unique(df.Nome_Cientifico))
         (j == "N.I." || contains(j, "spp.")) && continue
 
-        r = reflora_taxon(join(split(j, " ")[1:2], " "))
+        r = RefloraTaxon(join(split(j, " ")[1:2], " "))
         isempty(r) && continue
 
         if haskey(r[1], :taxon)
@@ -36,7 +36,6 @@ function ValidateTaxonomy(df::DataFrame, savepath::String, save::Bool = true)
             nome_corrente = j
         end
 
-        # Só testa relacionamentos (sinônimos) se o nome não for já o correto
         if status != "NOME_CORRETO" || isnothing(status)
             for rel in get(r[1], :resource_relationship, [])
                 nome_binomio = join(split(rel[:scientificname])[1:min(2, end)], " ")
@@ -88,10 +87,6 @@ function ValidateTaxonomy(df::DataFrame, savepath::String, save::Bool = true)
     
     if save == true
         salvar_planilha(inconsistencias, joinpath(savepath, "Resultados\\Verificação_Botânica.xlsx"))
-"""        XLSX.writetable(, 
-                       "Inconsistencias" => inconsistencias, 
-                       overwrite = true
-        )"""
     end
 
     return filter(x -> x.Status != "Correto", inconsistencias)

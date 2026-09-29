@@ -12,12 +12,26 @@ function select_periods(dados::DataFrame, Var::String)
     return Anos, periodos
 end
 
-function dataFustes(
-    dados::DataFrame,
-    Var::String,
-    Anos::Vector{Int64};
-    parametros_fustes::Vector{Int64},
-)
+function dataTrees(dados::DataFrame, Var::String, Anos::Vector{Int64})
+    dados_arvores = [DataFrame() for _ in 1:(length(Anos))]
+    
+    for i in 1:length(Anos)
+        col = Symbol(Var, "_", Anos[i])
+        dapcol = Symbol("DAP", "_", Anos[i])
+        dados_arvores[i] = filter(x -> !ismissing(x[col]) && x.Fuste == 1, dados)
+        
+        if Var == "CAP"
+            rename!(dados_arvores[i], col => "DAP_$(Anos[i])")
+
+            transform!(dados_arvores[i], dapcol => ByRow(x -> round(x/pi, digits=2)) => Symbol("DAP_$(Anos[i])"))
+        end
+    end
+
+    salvar_planilha_por_ano(dados_arvores, Anos, joinpath(pwd(), "Resultados\\1 - Dados_Anuais.xlsx"))
+    return dados_arvores
+end  
+
+function dataStem(dados::DataFrame, Var::String,Anos::Vector{Int64}; parametros_fustes::Vector{Int64})
     dados_fustes = [DataFrame() for _ in 1:length(Anos)]
     especies_distintas = unique(skipmissing(dados.Nome_Cientifico))
 
@@ -57,25 +71,3 @@ function dataFustes(
     salvar_planilha_por_ano(dados_fustes, Anos, joinpath(pwd(), "Resultados\\2 - Dados_Fustes.xlsx"))
     return dados_fustes
 end
-
-function dataTrees(dados::DataFrame, Var::String, Anos::Vector{Int64})
-    dados_arvores = [DataFrame() for _ in 1:(length(Anos))]
-    
-    for i in 1:length(Anos)
-        col = Symbol(Var, "_", Anos[i])
-        dapcol = Symbol("DAP", "_", Anos[i])
-        dados_arvores[i] = filter(x -> !ismissing(x[col]) && x.Fuste == 1, dados)
-        
-        if Var == "CAP"
-            rename!(dados_arvores[i], col => "DAP_$(Anos[i])")
-
-            transform!(dados_arvores[i], dapcol => ByRow(
-                x -> round(x/pi, digits=2)
-            ) => Symbol("DAP_$(Anos[i])"))
-        end
-    end
-
-    salvar_planilha_por_ano(dados_arvores, Anos, joinpath(pwd(), "Resultados\\1 - Dados_Anuais.xlsx"))
-    return dados_arvores
-end  
-
